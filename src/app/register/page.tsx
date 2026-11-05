@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useApp } from "@/components/AppProviders";
+import { GoogleSignIn } from "@/components/GoogleSignIn";
 import { apiRequest, type User } from "@/lib/api";
 
 export default function RegisterPage() {
@@ -50,6 +51,7 @@ export default function RegisterPage() {
           <label className="field"><span>Confirm password</span><input name="confirmPassword" type="password" required minLength={8} autoComplete="new-password" placeholder="Type it one more time" /></label>
           <button className="button auth-submit" disabled={busy}>{busy ? "Making your account..." : "Join the good"} <span>↗</span></button>
         </form>
+        <GoogleSignIn />
         <p className="auth-switch">Already one of us? <Link href="/login">Log in</Link></p>
       </div>
     </section>

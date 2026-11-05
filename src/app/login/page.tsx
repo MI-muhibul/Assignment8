@@ -4,12 +4,15 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useApp } from "@/components/AppProviders";
+import { GoogleSignIn } from "@/components/GoogleSignIn";
 import { apiRequest, type User } from "@/lib/api";
 
 function LoginForm() {
   const { signIn, notify } = useApp();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const requestedNext = searchParams.get("next");
+  const redirectTo = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : "/events";
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -35,12 +38,15 @@ function LoginForm() {
   }
 
   return (
-    <form className="auth-form" onSubmit={submit}>
-      {error && <div className="form-error" role="alert">{error}</div>}
-      <label className="field"><span>Email address</span><input name="email" type="email" required autoComplete="email" placeholder="you@example.com" /></label>
-      <label className="field"><span>Password</span><input name="password" type="password" required minLength={8} autoComplete="current-password" placeholder="Your password" /></label>
-      <button className="button auth-submit" disabled={busy}>{busy ? "One moment..." : "Log in"} <span>↗</span></button>
-    </form>
+    <>
+      <form className="auth-form" onSubmit={submit}>
+        {error && <div className="form-error" role="alert">{error}</div>}
+        <label className="field"><span>Email address</span><input name="email" type="email" required autoComplete="email" placeholder="you@example.com" /></label>
+        <label className="field"><span>Password</span><input name="password" type="password" required minLength={8} autoComplete="current-password" placeholder="Your password" /></label>
+        <button className="button auth-submit" disabled={busy}>{busy ? "One moment..." : "Log in"} <span>↗</span></button>
+      </form>
+      <GoogleSignIn redirectTo={redirectTo} />
+    </>
   );
 }
 
