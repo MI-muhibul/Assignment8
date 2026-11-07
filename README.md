@@ -4,6 +4,11 @@ Live site: [Good Neighbors](https://assignment8-flax.vercel.app)
 
 Good Neighbors helps people discover and organize local community-service events.
 
+## Repositories
+
+- Client: [MI-muhibul/Assignment8](https://github.com/MI-muhibul/Assignment8)
+- Server: [MI-muhibul/Assignment8-server](https://github.com/MI-muhibul/Assignment8-server)
+
 ## Features
 
 - Browse upcoming neighborhood events and filter them by category.

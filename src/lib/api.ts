@@ -17,8 +17,14 @@ export type EventItem = {
   date: string;
   joinedBy: string[];
   createdBy: User | string;
-  createdByEmail?: string;
 };
+
+export class ApiError extends Error {
+  constructor(message: string, public readonly status: number) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
 
 export async function apiRequest<T>(
   path: string,
@@ -36,7 +42,10 @@ export async function apiRequest<T>(
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(typeof data.message === "string" ? data.message : "Something went wrong. Please try again.");
+    throw new ApiError(
+      typeof data.message === "string" ? data.message : "Something went wrong. Please try again.",
+      response.status,
+    );
   }
   return data as T;
 }

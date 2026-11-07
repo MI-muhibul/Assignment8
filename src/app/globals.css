@@ -161,6 +161,7 @@ button { color: inherit; }
 .filter-chip { border: 1px solid var(--line); padding: 8px 14px; background: transparent; color: var(--muted); font-size: 10px; border-radius: 30px; cursor: pointer; }
 .filter-chip.active, .filter-chip:hover { background: var(--green); border-color: var(--green); color: #fff; }
 .page-event-grid { padding-top: 5px; }
+.events-load-more { display: flex; justify-content: center; margin-top: 32px; }
 .inline-error, .form-error { background: color-mix(in srgb, #ba493e 10%, var(--surface)); border: 1px solid color-mix(in srgb, #ba493e 24%, var(--line)); padding: 14px 17px; color: #a43e35; font-size: 12px; }
 .detail-wrap { width: min(1000px, calc(100% - 48px)); padding-top: 43px; }
 .back-link { color: var(--green); font-size: 12px; }

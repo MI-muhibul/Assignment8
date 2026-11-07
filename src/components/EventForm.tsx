@@ -10,7 +10,8 @@ type EventFormValues = Pick<EventItem, "title" | "description" | "type" | "image
 const eventTypes = ["Cleanup", "Plantation", "Donation", "Community", "Education", "Other"];
 
 function toLocalDateTimeValue(date: string) {
-  const localDate = new Date(new Date(date).getTime() - new Date(date).getTimezoneOffset() * 60_000);
+  const parsedDate = new Date(date);
+  const localDate = new Date(parsedDate.getTime() - parsedDate.getTimezoneOffset() * 60_000);
   return localDate.toISOString().slice(0, 16);
 }
 

@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { apiRequest, type User } from "@/lib/api";
+import { ApiError, apiRequest, type User } from "@/lib/api";
 
 type AuthContextValue = {
   user: User | null;
@@ -69,12 +69,16 @@ export function AppProviders({ children }: { children: ReactNode }) {
     }
     apiRequest<{ user: User }>("/api/auth/me", {}, savedToken)
       .then(({ user: currentUser }) => setUser(currentUser))
-      .catch(() => {
-        localStorage.removeItem("gn-token");
-        setToken(null);
+      .catch((caught: unknown) => {
+        if (caught instanceof ApiError && caught.status === 401) {
+          localStorage.removeItem("gn-token");
+          setToken(null);
+          return;
+        }
+        notify("We couldn't verify your saved sign-in. Check your connection; your session is preserved.", "error");
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [notify]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
