@@ -17,6 +17,7 @@ export type EventItem = {
   date: string;
   joinedBy: string[];
   createdBy: User | string;
+  createdByEmail?: string;
 };
 
 export async function apiRequest<T>(

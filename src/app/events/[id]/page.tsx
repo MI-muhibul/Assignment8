@@ -44,6 +44,7 @@ function EventDetailContent() {
   if (loading) return <div className="page-wrap"><div className="skeleton skeleton-title" /><div className="skeleton skeleton-panel" /></div>;
   if (error || !event) return <section className="page-wrap"><Link className="back-link" href="/events">← Back to events</Link><div className="inline-error" role="alert" style={{ marginTop: 24 }}>{error || "This event is unavailable."}</div></section>;
   const isJoined = Boolean(user && event.joinedBy?.some((person) => String(person) === user.id));
+  const hasPassed = new Date(event.date) <= new Date();
   const organizer = typeof event.createdBy === "object" ? event.createdBy.name : "A local neighbor";
 
   return (
@@ -59,10 +60,10 @@ function EventDetailContent() {
           <p className="detail-description">{event.description}</p>
         </div>
         <aside className="detail-sidebar">
-          <h3>Come be part of it.</h3>
-          <p>A few helping hands can make a world of difference. Save your spot and meet your neighbors there.</p>
-          <button className="button" onClick={joinEvent} disabled={joining || isJoined}>{joining ? "Joining..." : isJoined ? "You’re joining us ✓" : "I’ll be there"}{!isJoined && <span>↗</span>}</button>
-          <div className="sidebar-note"><span>✳</span><span>{user ? "Thanks for showing up for your community." : "You’ll need an account to join. It only takes a moment."}</span></div>
+          <h3>{hasPassed ? "Thanks for showing up." : "Come be part of it."}</h3>
+          <p>{hasPassed ? "This event has already taken place. Find another way to show up for your community." : "A few helping hands can make a world of difference. Save your spot and meet your neighbors there."}</p>
+          {!hasPassed && <button className="button" onClick={joinEvent} disabled={joining || isJoined}>{joining ? "Joining..." : isJoined ? "You’re joining us ✓" : "I’ll be there"}{!isJoined && <span>↗</span>}</button>}
+          <div className="sidebar-note"><span>✳</span><span>{hasPassed ? "Browse upcoming events to find your next good thing." : user ? "Thanks for showing up for your community." : "You’ll need an account to join. It only takes a moment."}</span></div>
         </aside>
       </div>
     </article>

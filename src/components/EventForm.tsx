@@ -9,6 +9,11 @@ type EventFormValues = Pick<EventItem, "title" | "description" | "type" | "image
 
 const eventTypes = ["Cleanup", "Plantation", "Donation", "Community", "Education", "Other"];
 
+function toLocalDateTimeValue(date: string) {
+  const localDate = new Date(new Date(date).getTime() - new Date(date).getTimezoneOffset() * 60_000);
+  return localDate.toISOString().slice(0, 16);
+}
+
 export function EventForm({ event, eventId }: { event?: EventItem; eventId?: string }) {
   const { token, notify } = useApp();
   const router = useRouter();
@@ -20,7 +25,7 @@ export function EventForm({ event, eventId }: { event?: EventItem; eventId?: str
     type: event?.type || "Community",
     imageUrl: event?.imageUrl || "",
     location: event?.location || "",
-    date: event ? new Date(event.date).toISOString().slice(0, 16) : "",
+    date: event ? toLocalDateTimeValue(event.date) : "",
   });
 
   function update(field: keyof EventFormValues, value: string) {

@@ -28,8 +28,7 @@ function LoginForm() {
       });
       signIn(result.token, result.user);
       notify(`Welcome back, ${result.user.name.split(" ")[0]}.`);
-      const next = searchParams.get("next");
-      router.push(next?.startsWith("/") ? next : "/events");
+      router.push(redirectTo);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not sign you in.");
     } finally {
