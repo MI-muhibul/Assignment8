@@ -30,7 +30,7 @@ The client can be hosted on Vercel while the Express API runs on Render:
 
 1. Deploy the server repository to Render using its `render.yaml` Blueprint. Configure `MONGODB_URI` and, after deployment, set `CLIENT_ORIGIN` to the exact production client origin.
 2. Copy the Render service URL, for example `https://good-neighbors-api.onrender.com`.
-3. In the Vercel project for this client repository, add `NEXT_PUBLIC_API_URL` with that API URL (no trailing slash). It is a public URL, not a secret.
+3. In the Vercel project for this client repository, set the Production `NEXT_PUBLIC_API_URL` to `https://good-neighbors-api.onrender.com` (or your own Render URL, with no trailing slash). It is a public URL, not a secret; redeploy after changing it.
 4. Create a Google OAuth **Web application** client ID in Google Cloud Console. Add `http://localhost:3000` and your exact Vercel site origin to **Authorized JavaScript origins**.
 5. Set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` to that client ID in Vercel, and set `GOOGLE_CLIENT_ID` to the same value in Render. The API verifies Google ID tokens against this audience; no client secret is needed or should be added.
 6. Redeploy both services after setting their variables. `NEXT_PUBLIC_` values are included in the browser bundle at build time.
