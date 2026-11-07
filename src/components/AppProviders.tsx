@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 import { ApiError, apiRequest, type User } from "@/lib/api";
 
@@ -17,6 +17,29 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+const themeListeners = new Set<() => void>();
+
+function getThemeSnapshot(): "light" | "dark" {
+  return localStorage.getItem("gn-theme") === "dark" ? "dark" : "light";
+}
+
+function getServerThemeSnapshot(): "light" | "dark" {
+  return "light";
+}
+
+function subscribeToTheme(listener: () => void) {
+  themeListeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    themeListeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+function saveTheme(theme: "light" | "dark") {
+  localStorage.setItem("gn-theme", theme);
+  themeListeners.forEach((listener) => listener());
+}
 
 export function useApp() {
   const value = useContext(AuthContext);
@@ -31,10 +54,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     return localStorage.getItem("gn-token");
   });
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") return "light";
-    return localStorage.getItem("gn-theme") === "dark" ? "dark" : "light";
-  });
+  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, getServerThemeSnapshot);
   const [notice, setNotice] = useState<{ message: string; kind: "success" | "error"; key: number } | null>(null);
 
   const signIn = useCallback((nextToken: string, nextUser: User) => {
@@ -82,7 +102,6 @@ export function AppProviders({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem("gn-theme", theme);
   }, [theme]);
 
   useEffect(() => {
@@ -100,7 +119,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
       signOut,
       refreshUser,
       theme,
-      toggleTheme: () => setTheme((current) => current === "light" ? "dark" : "light"),
+      toggleTheme: () => saveTheme(theme === "light" ? "dark" : "light"),
       notify,
     }),
     [user, token, loading, signIn, signOut, refreshUser, theme, notify],
