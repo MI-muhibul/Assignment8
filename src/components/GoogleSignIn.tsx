@@ -37,7 +37,9 @@ export function GoogleSignIn({ redirectTo = "/events" }: { redirectTo?: string }
   const [scriptReady, setScriptReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  const clientId =
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
+    "183669712853-tht4qjppcuev99249c7ova4ip03inuk2.apps.googleusercontent.com";
 
   const handleCredential = useCallback(async (response: GoogleCredentialResponse) => {
     if (!response.credential) {
