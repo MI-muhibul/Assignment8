@@ -1,6 +1,6 @@
 # Good Neighbors
 
-Live site: [Good Neighbors](https://assignment8-aam7njghk-mi-muhibul.vercel.app)
+Live site: [Good Neighbors](https://assignment8-flax.vercel.app)
 
 Good Neighbors helps people discover and organize local community-service events.
 
@@ -9,7 +9,7 @@ Good Neighbors helps people discover and organize local community-service events
 - Browse upcoming neighborhood events and filter them by category.
 - Register and log in using email/password or Google.
 - Publish events with a future date, location, image, and description.
-- Join events and see your upcoming commitments.
+- Join events and see your past and upcoming commitments.
 - Edit and delete your own events.
 - Update your profile name and profile picture.
 - Switch between light and dark themes.
