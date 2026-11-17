@@ -5,7 +5,7 @@ export function EventCard({ event }: { event: EventItem }) {
   return (
     <article className="event-card">
       <Link className="event-image-link" href={`/events/${event._id}`} aria-label={`View ${event.title}`}>
-        <img className="event-image" src={event.imageUrl} alt="" />
+        <img className="event-image" src={event.imageUrl} alt={event.title} />
         <span className="event-type">{event.type}</span>
       </Link>
       <div className="event-card-content">
@@ -14,7 +14,9 @@ export function EventCard({ event }: { event: EventItem }) {
         <p className="event-location"><span>⌖</span> {event.location}</p>
         <div className="event-card-bottom">
           <span className="event-going">{event.joinedBy?.length || 0} neighbors going</span>
-          <Link className="arrow-link" href={`/events/${event._id}`} aria-label={`View ${event.title}`}>↗</Link>
+          <Link className="button button-small" href={`/events/${event._id}`}>
+            View Event &rarr;
+          </Link>
         </div>
       </div>
     </article>
